@@ -8,4 +8,9 @@ export namespace PokemonActions {
     static readonly type = '[Pokemon] Get pokemons';
     constructor(public payload: { offset: number, limit: number }) { }
   }
+
+  export class GetPokemonById {
+    static readonly type = '[Pokemon] Get pokemon by name';
+    constructor(public url: string) {}
+  }
 }

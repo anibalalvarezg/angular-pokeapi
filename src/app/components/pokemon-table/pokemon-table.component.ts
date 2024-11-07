@@ -33,6 +33,6 @@ export class PokemonTableComponent implements AfterViewInit {
   }
 
   onClick(url: string) {
-    
+    this._store.dispatch(new PokemonActions.GetPokemonById(url));
   }
 }

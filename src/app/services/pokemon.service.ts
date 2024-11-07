@@ -3,15 +3,23 @@ import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 
 export interface PokeAPI {
-  count: number
-  next: string
-  previous: any
-  results: PokemonMetaData[]
+  count: number;
+  next: string;
+  previous: any;
+  results: PokemonMetaData[];
 }
 
 export interface PokemonMetaData {
-  name: string
-  url: string
+  name: string;
+  url: string;
+}
+
+export interface PokemonData {
+  id: number;
+  name: string;
+  height: number;
+  weight: number;
+  sprites: { front_default: string };
 }
 
 @Injectable({
@@ -30,5 +38,9 @@ export class PokemonService {
       .set('offset', offset)
       .set('limit', limit);
     return this._http.get<PokeAPI>(this._url, { params }).pipe(map(response => response.results));
+  }
+
+  getPokemonById(url: string): Observable<PokemonData> {
+    return this._http.get<PokemonData>(url);
   }
 }
