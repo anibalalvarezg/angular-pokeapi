@@ -5,6 +5,7 @@ import { PokemonData, PokemonMetaData, PokemonService } from '../../services/pok
 import { firstValueFrom } from 'rxjs';
 
 export interface PokemonStateModel {
+  allPokemons: PokemonMetaData[];
   pokemons: PokemonMetaData[];
   total: number;
   offset: number;
@@ -15,6 +16,7 @@ export interface PokemonStateModel {
 @State<PokemonStateModel>({
   name: 'pokemon',
   defaults: {
+    allPokemons: [],
     pokemons: [],
     total: 0,
     offset: 0,
@@ -25,6 +27,11 @@ export interface PokemonStateModel {
 @Injectable()
 export class PokemonState {
   private _pokemonService = inject(PokemonService);
+
+  @Selector()
+  static getAllPokemons(state: PokemonStateModel) {
+    return state.allPokemons;
+  }
 
   @Selector()
   static getPokemons(state: PokemonStateModel) {
@@ -43,12 +50,12 @@ export class PokemonState {
 
   @Action(PokemonActions.GetTotal)
   async get(ctx: StateContext<PokemonStateModel>) {
-    const total = await firstValueFrom(this._pokemonService.getTotalPokemons()) ?? [];
+    const data = await firstValueFrom(this._pokemonService.getTotalPokemons()) ?? [];
     ctx.setState({
       ...ctx.getState(),
-      total: total,
+      total: data.count,
+      allPokemons: data.results,
     });
-  
   }
 
   @Action(PokemonActions.GetPokemons)

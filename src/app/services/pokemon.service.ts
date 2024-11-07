@@ -29,8 +29,11 @@ export class PokemonService {
   private readonly _url = 'https://pokeapi.co/api/v2/pokemon/'
   private _http = inject(HttpClient)
 
-  getTotalPokemons(): Observable<number> {
-    return this._http.get<PokeAPI>(this._url).pipe(map(response => response.count));
+  getTotalPokemons(): Observable<PokeAPI> {
+    const params = new HttpParams()
+      .set('offset', 0)
+      .set('limit', 5000);
+    return this._http.get<PokeAPI>(this._url, { params });
   }
 
   getPokemons(offset = 0, limit = 20): Observable<PokemonMetaData[]> {
