@@ -23,8 +23,7 @@ export class PokemonService {
   private _http = inject(HttpClient)
   private _total: number = 0;
 
-  getPokemons(offset = 0, limit = 20) {
-    const params = new HttpParams().set('offset', offset).set('limit', limit);
-    return this._http.get<PokeAPI>(this._url, { params }).pipe(tap(response => this._total = response.count), map(response => response.results));
+  getTotalPokemons(offset = 0, limit = 20) {
+    return this._http.get<PokeAPI>(this._url).pipe(map(response => response.count));
   }
 }

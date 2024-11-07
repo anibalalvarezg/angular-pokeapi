@@ -4,22 +4,22 @@ import { PokemonMetaData, PokemonService } from './services/pokemon.service';
 import { Store } from '@ngxs/store';
 import { PokemonState } from './state/pokemon/pokemon.state';
 import { PokemonActions } from './state/pokemon/pokemon.actions';
+import {MatTableModule} from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, MatTableModule, MatPaginatorModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
   title = 'angular-pokeapi';
   private _store = inject(Store);
-  pokemons$: Signal<PokemonMetaData[]> = this._store.selectSignal(PokemonState.getPokemons);
-
-  constructor() {
-    this._store.dispatch(new PokemonActions.Get());
-  }
+  total: Signal<number> = this._store.selectSignal(PokemonState.getTotalPokemons);
+  displayedColumns = ['name', 'url'];
+  constructor() {}
 
   ngOnInit(): void {
   }

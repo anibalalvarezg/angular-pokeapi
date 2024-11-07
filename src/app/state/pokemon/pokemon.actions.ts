@@ -1,6 +1,6 @@
 export namespace PokemonActions {
-  export class Get {
-    static readonly type = '[Pokemon] Get meta data';
+  export class GetTotal {
+    static readonly type = '[Pokemon] Get total count';
     constructor() { }
   }
 }

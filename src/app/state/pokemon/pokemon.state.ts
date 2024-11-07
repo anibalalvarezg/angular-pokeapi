@@ -6,12 +6,14 @@ import { firstValueFrom } from 'rxjs';
 
 export interface PokemonStateModel {
   pokemons: PokemonMetaData[];
+  total: number;
 }
 
 @State<PokemonStateModel>({
   name: 'pokemon',
   defaults: {
-    pokemons: []
+    pokemons: [],
+    total: 0,
   }
 })
 @Injectable()
@@ -23,12 +25,17 @@ export class PokemonState {
     return state.pokemons;
   }
 
-  @Action(PokemonActions.Get)
+  @Selector()
+  static getTotalPokemons(state: PokemonStateModel) {
+    return state.total;
+  }
+
+  @Action(PokemonActions.GetTotal)
   async get(ctx: StateContext<PokemonStateModel>) {
-    const pokemons = await firstValueFrom(this._pokemonService.getPokemons()) ?? [];
+    const total = await firstValueFrom(this._pokemonService.getTotalPokemons()) ?? [];
     ctx.setState({
       ...ctx.getState(),
-      pokemons: [...ctx.getState().pokemons, ...pokemons]
+      total: total,
     });
   
   }
