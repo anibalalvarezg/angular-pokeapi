@@ -6,11 +6,12 @@ import { Store } from '@ngxs/store';
 import { PokemonState } from '../../state/pokemon/pokemon.state';
 import { PokemonMetaData } from '../../services/pokemon.service';
 import { PokemonActions } from '../../state/pokemon/pokemon.actions';
+import { ExtractPokemonIdPipe } from '../../pipes/extract-pokemon-id.pipe';
 
 @Component({
   selector: 'app-pokemon-table',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, MatButtonModule],
+  imports: [MatTableModule, MatPaginatorModule, MatButtonModule, ExtractPokemonIdPipe],
   templateUrl: './pokemon-table.component.html',
   styleUrl: './pokemon-table.component.scss'
 })
@@ -18,7 +19,7 @@ export class PokemonTableComponent implements AfterViewInit {
   private _store = inject(Store);
   total$: Signal<number> = this._store.selectSignal(PokemonState.getTotalPokemons);
   pokemons$: Signal<PokemonMetaData[]> = this._store.selectSignal(PokemonState.getPokemons);
-  displayedColumns = ['name', 'url'];
+  displayedColumns = ['#', 'name', 'url'];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit(): void {
