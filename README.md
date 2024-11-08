@@ -3,8 +3,6 @@
 
 > This project is an Angular 18 application that uses the PokeAPI to get and display data about Pokémons. The application is styled with Tailwind CSS for a modern and responsive design, and uses NGXS as the state management solution.
 
-### 🏠 [Homepage](https://neon-dasik-243c28.netlify.app/)
-
 ### ✨ [Demo](https://neon-dasik-243c28.netlify.app/)
 
 ## Install
@@ -24,10 +22,6 @@ npm run start
 👤 **Anibal Alvarez G.**
 
 * Github: [@anibalalvarezg](https://github.com/anibalalvarezg)
-
-## Show your support
-
-Give a ⭐️ if this project helped you!
 
 
 ***
