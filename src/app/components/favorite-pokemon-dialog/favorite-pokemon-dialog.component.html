@@ -1,0 +1,3 @@
+@if (favoritePokemon()) {
+  <app-pokemon-info [pokemon]="favoritePokemon()" [favoritePokemon]="favoritePokemon()" [dialog]="true" (onClose)="onClose()"></app-pokemon-info>
+}
