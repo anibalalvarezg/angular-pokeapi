@@ -12,13 +12,11 @@
     alt="Photo of a pokemon"
   />
   <mat-card-actions>
-    @if (!dialog) {
     <button mat-button (click)="onClick(pokemon()!)">
       {{ favoritePokemon()?.id === pokemon()?.id ? "UNLIKE" : "LIKE" }}
     </button>
-    }
     @if (dialog) {
-      <button mat-button (click)="onCloseFn()">Close</button>
+      <button mat-button (click)="onCloseFn()" class="ml-2">Close</button>
     }
   </mat-card-actions>
 </mat-card>

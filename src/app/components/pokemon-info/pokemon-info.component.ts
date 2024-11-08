@@ -39,6 +39,8 @@ export class PokemonInfoComponent {
     } else {
       this._store.dispatch(new PokemonActions.SetFavoritePokemon($event));
     }
+
+    if (this.dialog) this.onClose.emit(true);
   }
 
   onCloseFn(): void {
