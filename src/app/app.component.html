@@ -1,4 +1,20 @@
-<section class="flex flex-col-reverse sm:flex-row w-full gap-4 p-6">
-  <app-pokemon-table class="w-3/4"></app-pokemon-table>
-  <app-pokemon-card class="w-1/4"></app-pokemon-card>
+<header class="bg-blue-600 text-white p-6 shadow-md">
+  <div class="container mx-auto">
+    <h1 class="text-4xl font-extrabold tracking-wide text-center">Pokémon Dashboard</h1>
+  </div>
+</header>
+
+<h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4 text-center">Pokémon List</h2>
+<section class="flex flex-col-reverse sm:flex-row w-full gap-6 p-6 mb-6">
+  <div class="w-full sm:w-3/4 bg-white shadow-xl rounded-lg p-6">
+    <app-pokemon-table></app-pokemon-table>
+  </div>
+  <div class="w-full sm:w-1/4 bg-gradient-to-r from-blue-500 to-teal-500 shadow-xl rounded-lg p-6 flex items-center justify-center">
+    <app-pokemon-card></app-pokemon-card>
+  </div>
+</section>
+
+<h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4 text-center">Alphabet Table</h2>
+<section class="bg-white shadow-lg rounded-lg p-6 mx-auto max-w-4xl">
+  <app-alphabet-table></app-alphabet-table>
 </section>
