@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   Component,
   inject,
+  OnDestroy,
   Signal,
   ViewChild,
 } from '@angular/core';
@@ -16,7 +17,7 @@ import { ExtractPokemonIdPipe } from '../../pipes/extract-pokemon-id.pipe';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -35,7 +36,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './pokemon-table.component.html',
   styleUrl: './pokemon-table.component.scss',
 })
-export class PokemonTableComponent implements AfterViewInit {
+export class PokemonTableComponent implements AfterViewInit, OnDestroy {
   private _store = inject(Store);
   total$: Signal<number> = this._store.selectSignal(
     PokemonState.getTotalPokemons
@@ -45,12 +46,14 @@ export class PokemonTableComponent implements AfterViewInit {
   displayedColumns = ['#', 'name', 'url'];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
+  private ngUnsubscribe = new Subject<void>();
+
   ngOnInit(): void {
     this.dataSource = new MatTableDataSource(
       this._store.selectSnapshot(PokemonState.getAllPokemons)
     );
     this.searhControl.valueChanges
-      .pipe(debounceTime(100))
+      .pipe(debounceTime(100), takeUntil(this.ngUnsubscribe))
       .subscribe((value: string) => {
         this.applyFilter(value);
       });
@@ -66,5 +69,10 @@ export class PokemonTableComponent implements AfterViewInit {
 
   applyFilter(value: string) {
     this.dataSource.filter = value.trim().toLowerCase();
+  }
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
   }
 }
