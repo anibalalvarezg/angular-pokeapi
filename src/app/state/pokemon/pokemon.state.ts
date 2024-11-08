@@ -1,7 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { State, Action, Selector, StateContext } from '@ngxs/store';
 import { PokemonActions } from './pokemon.actions';
-import { PokemonData, PokemonMetaData, PokemonService } from '../../services/pokemon.service';
+import {
+  PokemonData,
+  PokemonMetaData,
+  PokemonService,
+} from '../../services/pokemon.service';
 import { firstValueFrom } from 'rxjs';
 
 export interface PokemonStateModel {
@@ -11,6 +15,7 @@ export interface PokemonStateModel {
   offset: number;
   limit: number;
   selectedPokemon: PokemonData | null;
+  favoritePokemon: PokemonData | null;
 }
 
 @State<PokemonStateModel>({
@@ -22,7 +27,8 @@ export interface PokemonStateModel {
     offset: 0,
     limit: 20,
     selectedPokemon: null,
-  }
+    favoritePokemon: null,
+  },
 })
 @Injectable()
 export class PokemonState {
@@ -48,9 +54,15 @@ export class PokemonState {
     return state.selectedPokemon;
   }
 
+  @Selector()
+  static getFavoritePokemon(state: PokemonStateModel) {
+    return state.favoritePokemon;
+  }
+
   @Action(PokemonActions.GetTotal)
   async get(ctx: StateContext<PokemonStateModel>) {
-    const data = await firstValueFrom(this._pokemonService.getTotalPokemons()) ?? [];
+    const data =
+      (await firstValueFrom(this._pokemonService.getTotalPokemons())) ?? [];
     ctx.setState({
       ...ctx.getState(),
       total: data.count,
@@ -59,9 +71,14 @@ export class PokemonState {
   }
 
   @Action(PokemonActions.GetPokemons)
-  async getPokemons(ctx: StateContext<PokemonStateModel>, action: PokemonActions.GetPokemons) {
+  async getPokemons(
+    ctx: StateContext<PokemonStateModel>,
+    action: PokemonActions.GetPokemons
+  ) {
     const { offset, limit } = action.payload;
-    const pokemons = await firstValueFrom(this._pokemonService.getPokemons(offset, limit)) ?? [];
+    const pokemons =
+      (await firstValueFrom(this._pokemonService.getPokemons(offset, limit))) ??
+      [];
     ctx.setState({
       ...ctx.getState(),
       offset: offset,
@@ -71,12 +88,28 @@ export class PokemonState {
   }
 
   @Action(PokemonActions.GetPokemonById)
-  async getPokemonsById(ctx: StateContext<PokemonStateModel>, action: PokemonActions.GetPokemonById) {
+  async getPokemonsById(
+    ctx: StateContext<PokemonStateModel>,
+    action: PokemonActions.GetPokemonById
+  ) {
     const { url } = action;
-    const pokemon = await firstValueFrom(this._pokemonService.getPokemonById(url)) ?? [];
+    const pokemon =
+      (await firstValueFrom(this._pokemonService.getPokemonById(url))) ?? [];
     ctx.setState({
       ...ctx.getState(),
       selectedPokemon: pokemon,
+    });
+  }
+
+  @Action(PokemonActions.SetFavoritePokemon)
+  async setFavoritePokemon(
+    ctx: StateContext<PokemonStateModel>,
+    action: PokemonActions.SetFavoritePokemon
+  ) {
+    const { pokemon } = action;
+    ctx.setState({
+      ...ctx.getState(),
+      favoritePokemon: pokemon,
     });
   }
 }

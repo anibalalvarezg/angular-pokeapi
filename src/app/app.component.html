@@ -2,6 +2,12 @@
   <div class="container mx-auto">
     <h1 class="text-4xl font-extrabold tracking-wide text-center">Pokémon Dashboard</h1>
   </div>
+  @if(favoritePokemon()) {
+    <div class="flex justify-center content-center gap-6 mt-8">
+      <p class="mt-3">Favorite Pokemon: {{ favoritePokemon()?.name | uppercase }}</p>
+      <button mat-raised-button (click)="onClick()">See</button>
+    </div>
+  }
 </header>
 
 <h2 class="text-2xl font-semibold text-gray-800 mt-8 mb-4 text-center">Pokémon List</h2>

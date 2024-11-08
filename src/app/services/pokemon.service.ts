@@ -23,24 +23,22 @@ export interface PokemonData {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PokemonService {
-  private readonly _url = 'https://pokeapi.co/api/v2/pokemon/'
-  private _http = inject(HttpClient)
+  private readonly _url = 'https://pokeapi.co/api/v2/pokemon/';
+  private _http = inject(HttpClient);
 
   getTotalPokemons(): Observable<PokeAPI> {
-    const params = new HttpParams()
-      .set('offset', 0)
-      .set('limit', 5000);
+    const params = new HttpParams().set('offset', 0).set('limit', 5000);
     return this._http.get<PokeAPI>(this._url, { params });
   }
 
   getPokemons(offset = 0, limit = 20): Observable<PokemonMetaData[]> {
-    const params = new HttpParams()
-      .set('offset', offset)
-      .set('limit', limit);
-    return this._http.get<PokeAPI>(this._url, { params }).pipe(map(response => response.results));
+    const params = new HttpParams().set('offset', offset).set('limit', limit);
+    return this._http
+      .get<PokeAPI>(this._url, { params })
+      .pipe(map((response) => response.results));
   }
 
   getPokemonById(url: string): Observable<PokemonData> {
